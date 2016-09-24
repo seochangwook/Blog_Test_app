@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_dimen"
+        android:layout_below="@+id/user_profile_my_introduce_textview"
+        android:background="@mipmap/line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="부서선택"
+            android:textColor="@color/black_color"
+            android:textSize="13dp" />
+
+        <TextView
+            android:id="@+id/select_list_info_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="180dp"
+            android:layout_marginTop="5dp"
+            android:text="*"
+            android:textColor="@color/black_color"
+            android:textSize="13dp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_dimen"
+        android:layout_below="@+id/user_profile_my_introduce_textview"
+        android:layout_marginTop="7dp"
+        android:background="@mipmap/line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/developeroneteamlist_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="개발1팀" />
+
+        <Button
+            android:id="@+id/developertwoteamlist_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="개발2팀" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/user_info_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_dimen"
+        android:layout_below="@+id/user_profile_my_introduce_textview"
+        android:background="@mipmap/line" />
+
+</LinearLayout>

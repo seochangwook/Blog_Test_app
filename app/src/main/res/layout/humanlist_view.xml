@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/scrap_content_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/pastel_color"
+        card:cardCornerRadius="8dp"
+        card:cardElevation="4dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/human_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp" />
+
+            <TextView
+                android:id="@+id/human_name_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="110dp"
+                android:layout_marginTop="8dp"
+                android:text="*"
+                android:textColor="@color/black_color"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/human_age_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="110dp"
+                android:layout_marginTop="28dp"
+                android:text="*"
+                android:textColor="@color/black_color"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/human_job_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="110dp"
+                android:layout_marginTop="48dp"
+                android:text="*"
+                android:textColor="@color/black_color"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/human_tel_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="110dp"
+                android:layout_marginTop="68dp"
+                android:text="*"
+                android:textColor="@color/black_color"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/human_address_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="110dp"
+                android:layout_marginTop="88dp"
+                android:text="*"
+                android:textColor="@color/black_color"
+                android:textSize="15dp" />
+
+            <ImageButton
+                android:id="@+id/human_info_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="265dp"
+                android:layout_marginTop="28dp"
+                android:background="@color/button_transparent_background"
+                android:src="@android:drawable/ic_dialog_info" />
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

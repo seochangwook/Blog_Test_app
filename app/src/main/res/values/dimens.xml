@@ -2,4 +2,26 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="main_info_textsize">15dp</dimen>
+
+    <!-- EmptyView -->
+    <!--empty view dimen-->
+    <dimen name="empty_img_width">65dp</dimen>
+    <dimen name="empty_img_height">65dp</dimen>
+    <dimen name="empty_img_margin_top">104dp</dimen>
+    <dimen name="empty_msg_margin_top">21dp</dimen>
+    <dimen name="empty_msg_size">13sp</dimen>
+
+    <dimen name="empty_height_b">200dp</dimen>
+    <dimen name="empty_img_width_b">30dp</dimen>
+    <dimen name="empty_img_height_b">30dp</dimen>
+    <dimen name="empty_img_margin_top_b">10dp</dimen>
+    <dimen name="empty_img_margin_left_b">15dp</dimen>
+    <dimen name="empty_img_margin_right_b">15dp</dimen>
+    <dimen name="empty_img_margin_bottom_b">10dp</dimen>
+    <dimen name="empty_textview">8dp</dimen>
+
+    <!-- line dimen -->
+    <dimen name="line_dimen">2dp</dimen>
 </resources>

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/human_resource_image"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -12,5 +13,38 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="@string/main_info"
+        android:textColor="@color/main_info_textcolor"
+        android:textSize="@dimen/main_info_textsize"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/main_button_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/human_list_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="List" />
+
+        <TextView
+            android:id="@+id/user_info_line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_dimen"
+            android:layout_below="@+id/user_profile_my_introduce_textview"
+            android:background="@mipmap/line" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/layout_container"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/main_button_list"></FrameLayout>
 </RelativeLayout>
