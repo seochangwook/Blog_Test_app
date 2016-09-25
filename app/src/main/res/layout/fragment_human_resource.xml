@@ -29,6 +29,14 @@
         app:frv_dividerHeight="0.5dp"
         app:frv_layoutManager="linear"
         app:frv_layoutManagerOrientation="vertical">
-
     </cn.iwgang.familiarrecyclerview.FamiliarRefreshRecyclerView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/scroll_up_fabbutton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="360dp"
+        android:src="@android:drawable/arrow_up_float" />
 </RelativeLayout>

@@ -9,7 +9,8 @@ import java.util.List;
 public class HumanData {
     public List<HumanData> humanDataList = new ArrayList<>(); //여러 사람의 정보를 담기위한 배열선언//
     int human_id;
-    int human_imageresource_id; //Drawable은 int값이다//
+    //int human_imageresource_id; //Drawable은 int값이다//
+    String human_imageurl; //네트워크로 부터 이미지 URL을 저장/
     int human_age;
     String human_name;
     String human_tel;
@@ -25,12 +26,12 @@ public class HumanData {
         this.human_id = human_id;
     }
 
-    public int getHuman_imageresource_id() {
-        return human_imageresource_id;
+    public String getHuman_imageurl() {
+        return human_imageurl;
     }
 
-    public void setHuman_imageresource_id(int human_imageresource_id) {
-        this.human_imageresource_id = human_imageresource_id;
+    public void setHuman_imageurl(String human_imageurl) {
+        this.human_imageurl = human_imageurl;
     }
 
     public String getHuman_name() {
@@ -80,6 +81,4 @@ public class HumanData {
     public void setHumanDataList(List<HumanData> humanDataList) {
         this.humanDataList = humanDataList;
     }
-
-
 }

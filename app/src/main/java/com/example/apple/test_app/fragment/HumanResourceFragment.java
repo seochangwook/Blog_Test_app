@@ -3,10 +3,12 @@ package com.example.apple.test_app.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -29,6 +31,7 @@ public class HumanResourceFragment extends Fragment {
     Button developeroneteamlist_button;
     Button developertwoteamlist_button;
     TextView what_select_list_info_text;
+    FloatingActionButton topup_button;
     /**
      * 어댑터, 데이터
      **/
@@ -38,6 +41,14 @@ public class HumanResourceFragment extends Fragment {
      * List Flag
      **/
     int list_flag = 0; //기본 0//
+    /**
+     * Scroll처리 관련 변수
+     **/
+    float startYPosition = 0; //기본적으로 스크롤은 Y축을 기준으로 계산.//
+    float endYPosition = 0;
+    boolean firstDragFlag = true;
+    boolean motionFlag = true;
+    boolean dragFlag = false; //현재 터치가 드래그인지 먼저 확인//
     private FamiliarRefreshRecyclerView human_list;
     private FamiliarRecyclerView recyclerview;
 
@@ -52,6 +63,9 @@ public class HumanResourceFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_human_resource, container, false);
 
         human_list = (FamiliarRefreshRecyclerView) view.findViewById(R.id.human_info_list);
+        topup_button = (FloatingActionButton) view.findViewById(R.id.scroll_up_fabbutton);
+
+        topup_button.setVisibility(View.GONE); //처음에 위로가기 버튼을 보이지 않는다.//
 
         /** RecyclerView 정의 **/
         //RefreshRecyclerView 기능설정.//
@@ -139,6 +153,67 @@ public class HumanResourceFragment extends Fragment {
             }
         });
 
+        /** RecyclerView의 Scroll Event처리 **/
+        recyclerview.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_MOVE: {
+                        dragFlag = true;
+
+                        //사용자는 보통 한 번 터치 후 내리거나 올리는 작업을 하기에 반복작업을 피하기 위해서 true/false로 한번만 되도록 구현.//
+                        if (firstDragFlag) //첫번째 움직임을 가지고 판단하기 위해서//
+                        {
+                            startYPosition = motionEvent.getY();
+                            firstDragFlag = false;
+                        }
+
+                        break;
+                    }
+
+                    case MotionEvent.ACTION_UP: {
+                        endYPosition = motionEvent.getY();
+                        firstDragFlag = true;
+
+                        if (dragFlag) {
+                            // 시작Y가 끝 Y보다 크다면 터치가 아래서 위로 이루어졌다는 것이고, 스크롤은 아래로내려갔다는 뜻이다.
+                            if ((startYPosition > endYPosition) && (startYPosition - endYPosition) > 10) {
+                                Log.d("data : ", "scroll down");
+
+                                topup_button.setVisibility(View.VISIBLE);
+                            }
+
+                            //시작 Y가 끝 보다 작다면 터치가 위에서 아래로 이러우졌다는 것이고, 스크롤이 올라갔다는 뜻이다.
+                            else if ((startYPosition < endYPosition) && (endYPosition - startYPosition) > 10) {
+                                Log.d("data : ", "scroll up");
+
+                                topup_button.setVisibility(View.GONE);
+                            }
+                        }
+
+                        //다시 Y축에 대한 위치를 초기화.//
+                        startYPosition = 0.0f;
+                        endYPosition = 0.0f;
+                        motionFlag = false;
+
+                        break;
+                    }
+                }
+
+                return false;
+            }
+        });
+
+        /** 스크롤 관련 이벤트 처리 **/
+        topup_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recyclerview.smoothScrollToPosition(0); //리스트의 맨 처음으로 이동//
+
+                topup_button.setVisibility(View.GONE);
+            }
+        });
+
         human_list.setOnLoadMoreListener(new FamiliarRefreshRecyclerView.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
@@ -202,11 +277,12 @@ public class HumanResourceFragment extends Fragment {
         {
             for (int i = 0; i < 10; i++) {
                 HumanData new_humandata = new HumanData();
+                String dummy_human_imageurl = "https://my-project-1-1470720309181.appspot.com/displayimage?imageid=AMIfv95i7QqpWTmLDE7kqw3txJPVAXPWCNd3Mz4rfBlAZ8HVZHmvjqQGlFy5oz1pWgUpxnwnXOrebTBd7nHoTaVUngSzFilPTtbelOn1SwPuBMt_IgtFRKAt3b0oPblW0j542SFVZHCNbSkb4d9P9U221kumJhC_ZwCO85PXq5-oMdxl6Yn6-F4";
 
                 new_humandata.setHuman_id(1);
                 new_humandata.setHuman_address("경기도 수원시 장안구");
                 new_humandata.setHuman_age(25);
-                new_humandata.setHuman_imageresource_id(R.mipmap.ic_launcher);
+                new_humandata.setHuman_imageurl(dummy_human_imageurl);
                 new_humandata.setHuman_name("서창욱");
                 new_humandata.setHuman_job("대학생");
                 new_humandata.setHuman_tel("010-xxxx-xxxx");
@@ -220,11 +296,12 @@ public class HumanResourceFragment extends Fragment {
         } else if (list_flag == 2) {
             for (int i = 0; i < 10; i++) {
                 HumanData new_humandata = new HumanData();
+                String dummy_human_imageurl = "https://my-project-1-1470720309181.appspot.com/displayimage?imageid=AMIfv95i7QqpWTmLDE7kqw3txJPVAXPWCNd3Mz4rfBlAZ8HVZHmvjqQGlFy5oz1pWgUpxnwnXOrebTBd7nHoTaVUngSzFilPTtbelOn1SwPuBMt_IgtFRKAt3b0oPblW0j542SFVZHCNbSkb4d9P9U221kumJhC_ZwCO85PXq5-oMdxl6Yn6-F4";
 
                 new_humandata.setHuman_id(2);
                 new_humandata.setHuman_address("경기도 수원시 팔달구");
                 new_humandata.setHuman_age(25);
-                new_humandata.setHuman_imageresource_id(R.mipmap.ic_launcher);
+                new_humandata.setHuman_imageurl(dummy_human_imageurl);
                 new_humandata.setHuman_name("홍길동");
                 new_humandata.setHuman_job("직장인");
                 new_humandata.setHuman_tel("010-xxxx-xxxx");

@@ -18,10 +18,10 @@
 
             <ImageView
                 android:id="@+id/human_image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp" />
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="9dp" />
 
             <TextView
                 android:id="@+id/human_name_text"
