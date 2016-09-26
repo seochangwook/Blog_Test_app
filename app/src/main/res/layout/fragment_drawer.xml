@@ -1,0 +1,46 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="250dp"
+    android:layout_height="match_parent"
+    tools:context="com.example.apple.test_app.fragment.DrawerFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="155dp"
+        android:background="@mipmap/drawer_header_background">
+
+        <ImageView
+            android:id="@+id/people_imageview"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="150dp"
+            android:layout_marginTop="15dp" />
+
+        <Button
+            android:id="@+id/option_button_1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="141dp"
+            android:layout_marginTop="100dp"
+            android:text="1" />
+
+        <Button
+            android:id="@+id/option_button_2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="186dp"
+            android:layout_marginTop="100dp"
+            android:text="2" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/sub_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="410dp"
+        android:layout_marginTop="155dp"
+        android:background="@color/drawer_background">
+
+    </FrameLayout>
+
+</FrameLayout>
