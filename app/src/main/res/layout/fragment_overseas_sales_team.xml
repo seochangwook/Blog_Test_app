@@ -1,0 +1,55 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.example.apple.test_app.fragment.OverseasSalesTeamFragment">
+
+        <!-- TODO: Update blank fragment layout -->
+        <TextView
+            android:id="@+id/info_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="해외팀 정보(인사리스트/기업위치/기타정보)"
+            android:textColor="@color/black_color" />
+
+        <TextView
+            android:id="@+id/user_info_line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_dimen"
+            android:layout_below="@+id/info_text"
+            android:layout_marginTop="5dp"
+            android:background="@mipmap/line" />
+
+        <android.support.v4.app.FragmentTabHost
+            android:id="@+id/tabhost"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/user_info_line"
+            android:layout_marginTop="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TabWidget
+                    android:id="@android:id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"></TabWidget>
+
+                <FrameLayout
+                    android:id="@android:id/tabcontent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></FrameLayout>
+            </LinearLayout>
+        </android.support.v4.app.FragmentTabHost>
+
+    </RelativeLayout>
+</ScrollView>

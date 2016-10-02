@@ -27,11 +27,24 @@
         android:layout_marginTop="30dp"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/human_list_button"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="List" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/human_list_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="List1 " />
+
+            <Button
+                android:id="@+id/overseas_sales_team_list_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="List 2" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/user_info_line"

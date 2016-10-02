@@ -10,10 +10,12 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.apple.test_app.fragment.HumanResourceFragment;
+import com.example.apple.test_app.fragment.OverseasSalesTeamFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     Button human_list_button;
+    Button overseas_sales_team_list_button;
 
     DrawerLayout drawerLayout;
 
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.drawer_main_activity);
 
         human_list_button = (Button) findViewById(R.id.human_list_button);
+        overseas_sales_team_list_button = (Button) findViewById(R.id.overseas_sales_team_list_button);
 
         /** DrawerLayout 설정 **/
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -34,6 +37,16 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //해당 프래그먼트로 변경(replace)해준다.//
                 getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, new HumanResourceFragment()
+                ).setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .commit();
+            }
+        });
+
+        overseas_sales_team_list_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //해당 프래그먼트로 변경(replace)해준다.//
+                getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, new OverseasSalesTeamFragment()
                 ).setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                         .commit();
             }

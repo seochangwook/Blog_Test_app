@@ -10,6 +10,7 @@
     <color name="pastel_color">#FFF0F5</color>
     <color name="rosybrown">#BC8F8F</color>
     <color name="powderblue">#B0E0E6</color>
+    <color name="white_color">#ffffff</color>
 
     <color name="button_transparent_background">#00000000</color>
     <color name="drawer_background">#FFFFFF</color>

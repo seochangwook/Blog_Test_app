@@ -258,6 +258,8 @@ public class HumanResourceFragment extends Fragment {
             }
         });
 
+        setHasOptionsMenu(true);
+
         return view;
     }
 

@@ -1,0 +1,16 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.apple.test_app.fragment.OverseasTeamMemberListFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/search_info_textview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:text="인사리스트목록" />
+
+</FrameLayout>
