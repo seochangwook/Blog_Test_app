@@ -2,6 +2,7 @@ package com.example.apple.test_app.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
@@ -18,6 +19,13 @@ public class OverseasSalesTeamFragment extends Fragment {
 
     public OverseasSalesTeamFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
     }
 
 

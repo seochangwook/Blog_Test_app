@@ -3,11 +3,15 @@ package com.example.apple.test_app.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +58,13 @@ public class HumanResourceFragment extends Fragment {
 
     public HumanResourceFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -258,8 +269,6 @@ public class HumanResourceFragment extends Fragment {
             }
         });
 
-        setHasOptionsMenu(true);
-
         return view;
     }
 
@@ -315,5 +324,23 @@ public class HumanResourceFragment extends Fragment {
             //최종적으로 완성된 데이터클래스를 어댑터로 할당//
             humanListAdapter.set_HumanData(humanData);
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        getActivity().getMenuInflater().inflate(R.menu.main_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int item_id = item.getItemId();
+
+        if (item_id == R.id.help_menuitem) {
+            Toast.makeText(getActivity(), "도움말 버튼", Toast.LENGTH_SHORT).show();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

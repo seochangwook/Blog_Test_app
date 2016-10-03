@@ -1,0 +1,27 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.apple.test_app.fragment.SearchInfoFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:text="검색결과 : "
+        android:textColor="@color/black_color"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/search_value_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="5dp"
+        android:text="*"
+        android:textColor="@color/black_color"
+        android:textStyle="bold" />
+
+</RelativeLayout>

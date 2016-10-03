@@ -2,6 +2,7 @@ package com.example.apple.test_app.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
@@ -25,15 +26,18 @@ public class OverseasTeamLocationFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_overseas_team_location, container, false);
-
-        //메뉴변경 옵션허용//
-        setHasOptionsMenu(true);
 
         return view;
     }
