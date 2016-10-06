@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.apple.test_app.R;
-import com.example.apple.test_app.data.HumanData;
+import com.example.apple.test_app.data.viewdata.HumanData;
 import com.example.apple.test_app.view.LoadMoreView;
 import com.example.apple.test_app.widget.HumanListAdapter;
 

@@ -205,8 +205,6 @@ public class MainActivity extends AppCompatActivity {
                 search_value = toolbar_edittext.getText().toString();
                 toolbar_edittext.setText("");
 
-                Toast.makeText(MainActivity.this, "검색: " + search_value, Toast.LENGTH_SHORT).show();
-
                 //검색 프래그먼트로 이동 및 데이터 전달(프래그먼트는 Bundle을 이용)//
                 SearchInfoFragment searchInfoFragment = new SearchInfoFragment();
 
@@ -215,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
                 searchInfoFragment.setArguments(args);
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, searchInfoFragment
-                ).setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack(null)
+                ).setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack(null) //백스택 등록//
                         .commit();
 
                 flag = 1; //백스택을 필요로 하는 곳에서 특정 플래그를 준다.//

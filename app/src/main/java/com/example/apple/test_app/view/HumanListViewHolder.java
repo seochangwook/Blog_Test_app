@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.apple.test_app.R;
-import com.example.apple.test_app.data.HumanData;
+import com.example.apple.test_app.data.viewdata.HumanData;
 import com.squareup.picasso.Picasso;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;

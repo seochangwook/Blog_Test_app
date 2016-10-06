@@ -1,4 +1,4 @@
-package com.example.apple.test_app.data;
+package com.example.apple.test_app.data.viewdata;
 
 import java.util.ArrayList;
 import java.util.List;

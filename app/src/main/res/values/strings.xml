@@ -7,4 +7,6 @@
     <string name="main_info">Human Resource Management</string>
     <string name="load_more_normal_main">정보 더보기</string>
     <string name="load_more_loading_main">정보검색 중...</string>
+
+    <string name="server_domain">192.168.0.4</string>
 </resources>

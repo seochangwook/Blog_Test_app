@@ -33,7 +33,6 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/user_info_line"
             android:layout_marginTop="10dp">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
