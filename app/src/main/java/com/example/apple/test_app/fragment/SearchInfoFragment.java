@@ -68,7 +68,7 @@ public class SearchInfoFragment extends Fragment {
 
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
                         alertDialog.setTitle("People Search")
-                                .setMessage("사용자 정보를 찾을 수 없습니다.")
+                                .setMessage("사용자 정보를 찾을 수 없습니다. 다시 입력해주세요 (네트워크 상태를 점검해주세요.)")
                                 .setCancelable(false)
                                 .setPositiveButton("확인",
                                         new DialogInterface.OnClickListener() {
