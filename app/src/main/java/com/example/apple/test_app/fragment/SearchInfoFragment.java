@@ -68,7 +68,7 @@ public class SearchInfoFragment extends Fragment {
 
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
                         alertDialog.setTitle("People Search")
-                                .setMessage("사용자 정보를 찾을 수 없습니다. 다시 입력해주세요 (네트워크 상태를 점검해주세요.)")
+                                .setMessage("요청에러 (네트워크 상태를 점검해주세요.)")
                                 .setCancelable(false)
                                 .setPositiveButton("확인",
                                         new DialogInterface.OnClickListener() {
@@ -102,9 +102,31 @@ public class SearchInfoFragment extends Fragment {
 
                         UserInfoRequest userInfoRequest = gson.fromJson(responseData, UserInfoRequest.class);
 
-                        setUserInfo(userInfoRequest.getResult());
+                        //검색결과에 따른 판단.//
+                        String is_success = userInfoRequest.getIs_success();
 
-                        hidepDialog();
+                        if (is_success.equals("false")) {
+                            hidepDialog();
+
+                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                            alertDialog.setTitle("People Search")
+                                    .setMessage("사용자를 찾을 수 없습니다. 다시 입력해주세요")
+                                    .setCancelable(false)
+                                    .setPositiveButton("확인",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                }
+                                            });
+
+                            AlertDialog alert = alertDialog.create();
+                            alert.show();
+                        } else if (is_success.equals("true")) {
+                            setUserInfo(userInfoRequest.getResult());
+
+                            hidepDialog();
+                        }
                     }
                 });
             }
