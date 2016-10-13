@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.apple.test_app.HumanAddActivity"
+    tools:showIn="@layout/activity_human_add">
+
+    <TextView
+        android:id="@+id/department_name_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#af02ff"
+        android:text="*"
+        android:textAlignment="center"
+        android:textColor="@color/black_color"
+        android:textSize="20dp"
+        android:textStyle="italic" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="이름 :"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/name_edittext"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="38dp"
+        android:background="@android:drawable/editbox_background_normal"
+        android:hint="필수입력사항"
+        android:textSize="10dp" />
+
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="@dimen/line_dimen"
+        android:layout_below="@+id/name_edittext"
+        android:layout_marginTop="5dp"
+        android:background="@mipmap/line" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="직업 :"
+        android:textColor="@color/black_color"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/job_edittext"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="88dp"
+        android:background="@android:drawable/editbox_background_normal"
+        android:textSize="10dp" />
+
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="@dimen/line_dimen"
+        android:layout_below="@+id/job_edittext"
+        android:layout_marginTop="5dp"
+        android:background="@mipmap/line" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:text="전화번호     :"
+        android:textColor="@color/black_color"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/tel_edittext"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="138dp"
+        android:background="@android:drawable/editbox_background_normal"
+        android:hint="'-'없이 입력"
+        android:inputType="number"
+        android:textSize="10dp" />
+
+    <TextView
+        android:layout_width="320dp"
+        android:layout_height="@dimen/line_dimen"
+        android:layout_below="@+id/tel_edittext"
+        android:layout_marginTop="5dp"
+        android:background="@mipmap/line" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:text="이메일 주소   :"
+        android:textColor="@color/black_color"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/emailaddress_edittext"
+        android:layout_width="240dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="188dp"
+        android:background="@android:drawable/editbox_background_normal"
+        android:inputType="textEmailAddress"
+        android:textSize="10dp" />
+
+    <TextView
+        android:layout_width="320dp"
+        android:layout_height="@dimen/line_dimen"
+        android:layout_below="@+id/emailaddress_edittext"
+        android:layout_marginTop="5dp"
+        android:background="@mipmap/line" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="250dp"
+        android:text="현 주소지     :"
+        android:textColor="@color/black_color"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/address_edittext"
+        android:layout_width="240dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="238dp"
+        android:background="@android:drawable/editbox_background_normal"
+        android:hint="시/구/동"
+        android:textSize="10dp" />
+
+    <TextView
+        android:layout_width="320dp"
+        android:layout_height="@dimen/line_dimen"
+        android:layout_below="@+id/address_edittext"
+        android:layout_marginTop="5dp"
+        android:background="@mipmap/line" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
+        android:text="나이         :"
+        android:textColor="@color/black_color"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/age_edittext"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="288dp"
+        android:background="@android:drawable/editbox_background_normal"
+        android:inputType="number"
+        android:textSize="10dp" />
+
+    <TextView
+        android:layout_width="320dp"
+        android:layout_height="@dimen/line_dimen"
+        android:layout_below="@+id/age_edittext"
+        android:layout_marginTop="5dp"
+        android:background="@mipmap/line" />
+
+    <EditText
+        android:id="@+id/etcinfo_edittext"
+        android:layout_width="240dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="338dp"
+        android:background="@android:drawable/editbox_background_normal"
+        android:textSize="10dp" />
+
+    <TextView
+        android:layout_width="320dp"
+        android:layout_height="@dimen/line_dimen"
+        android:layout_below="@+id/etcinfo_edittext"
+        android:layout_marginTop="5dp"
+        android:background="@mipmap/line" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="350dp"
+        android:text="기타사항     :"
+        android:textColor="@color/black_color"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="400dp"
+        android:text="자기소개      :"
+        android:textColor="@color/black_color"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/introduction_edittext"
+        android:layout_width="240dp"
+        android:layout_height="85dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="388dp"
+        android:background="@android:drawable/editbox_background_normal"
+        android:textSize="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="510dp"
+        android:text="[등록양식]"
+        android:textColor="@color/black_color"
+        android:textSize="10dp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/humanimage_imageview"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="220dp"
+        android:layout_marginTop="40dp"
+        android:background="@mipmap/profile_hambur" />
+
+    <ImageButton
+        android:id="@+id/imageadd_button"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginLeft="280dp"
+        android:layout_marginTop="110dp"
+        android:background="@color/button_transparent_background"
+        android:src="@mipmap/btn_profileedit" />
+
+</RelativeLayout>

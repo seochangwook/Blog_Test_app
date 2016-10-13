@@ -19,8 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.apple.test_app.R;
-import com.example.apple.test_app.data.jsondata.UserInfoRequest;
-import com.example.apple.test_app.data.jsondata.UserInfoRequestResult;
+import com.example.apple.test_app.data.jsondata.UserSearchRequest;
+import com.example.apple.test_app.data.jsondata.UserSearchRequestResult;
 import com.example.apple.test_app.manager.networkmanager.NetworkManager;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -100,7 +100,7 @@ public class SearchInfoFragment extends Fragment {
                         //GSON으로 자동 파싱적용//
                         Gson gson = new Gson();
 
-                        UserInfoRequest userInfoRequest = gson.fromJson(responseData, UserInfoRequest.class);
+                        UserSearchRequest userInfoRequest = gson.fromJson(responseData, UserSearchRequest.class);
 
                         //검색결과에 따른 판단.//
                         String is_success = userInfoRequest.getIs_success();
@@ -191,7 +191,7 @@ public class SearchInfoFragment extends Fragment {
         builder.host(getResources().getString(R.string.server_domain)); //host정의.//
         builder.port(8080);
         builder.addPathSegment("DummyServer_Blog");
-        builder.addPathSegment("userinfo.jsp");
+        builder.addPathSegment("usersearch.jsp");
 
         //Body설정//
         FormBody.Builder formBuilder = new FormBody.Builder()
@@ -215,13 +215,13 @@ public class SearchInfoFragment extends Fragment {
         client.newCall(request).enqueue(requestuserinfocallback);
     }
 
-    public void setUserInfo(UserInfoRequestResult userInfoRequestResult) {
-        name_textview.setText(userInfoRequestResult.getName());
-        department_name_textview.setText(userInfoRequestResult.getDepartment());
-        introduction_textview.setText(userInfoRequestResult.getIntroduction());
-        etc_textview.setText(userInfoRequestResult.getEtc());
+    public void setUserInfo(UserSearchRequestResult userInfoRequestResult) {
+        name_textview.setText(userInfoRequestResult.getHuman_name());
+        department_name_textview.setText(userInfoRequestResult.getHuman_department());
+        introduction_textview.setText(userInfoRequestResult.getHuman_introduction());
+        etc_textview.setText(userInfoRequestResult.getHuman_etcinfo());
 
-        String imageUrl = userInfoRequestResult.getImage();
+        String imageUrl = userInfoRequestResult.getHuman_imageurl();
 
         //이미지 로드//
         /** Picasso 방법 **/

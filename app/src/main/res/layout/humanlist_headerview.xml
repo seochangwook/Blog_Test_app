@@ -54,13 +54,21 @@
             android:id="@+id/developeroneteamlist_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="개발1팀" />
+            android:text="개발팀" />
 
         <Button
             android:id="@+id/developertwoteamlist_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="개발2팀" />
+            android:text="경영팀" />
+
+        <ImageButton
+            android:id="@+id/humanadd_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="100dp"
+            android:background="@color/button_transparent_background"
+            android:src="@mipmap/humanadd_image" />
     </LinearLayout>
 
     <TextView

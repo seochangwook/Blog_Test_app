@@ -16,6 +16,42 @@ public class HumanData {
     String human_tel;
     String human_job;
     String human_address;
+    String human_emailaddress;
+    String human_etcinfo;
+    String human_introduction;
+    String human_department;
+
+    public String getHuman_etcinfo() {
+        return human_etcinfo;
+    }
+
+    public void setHuman_etcinfo(String human_etcinfo) {
+        this.human_etcinfo = human_etcinfo;
+    }
+
+    public String getHuman_emailaddress() {
+        return human_emailaddress;
+    }
+
+    public void setHuman_emailaddress(String human_emailaddress) {
+        this.human_emailaddress = human_emailaddress;
+    }
+
+    public String getHuman_introduction() {
+        return human_introduction;
+    }
+
+    public void setHuman_introduction(String human_introduction) {
+        this.human_introduction = human_introduction;
+    }
+
+    public String getHuman_department() {
+        return human_department;
+    }
+
+    public void setHuman_department(String human_department) {
+        this.human_department = human_department;
+    }
 
     //getter/setter설정//
     public int getHuman_id() {

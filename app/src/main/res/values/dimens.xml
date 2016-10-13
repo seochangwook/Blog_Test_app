@@ -24,4 +24,5 @@
 
     <!-- line dimen -->
     <dimen name="line_dimen">2dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

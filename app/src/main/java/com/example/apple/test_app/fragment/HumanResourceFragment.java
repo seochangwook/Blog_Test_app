@@ -1,11 +1,15 @@
 package com.example.apple.test_app.fragment;
 
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,24 +20,46 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.apple.test_app.HumanAddActivity;
 import com.example.apple.test_app.R;
+import com.example.apple.test_app.data.jsondata.UserListRequest;
+import com.example.apple.test_app.data.jsondata.UserListRequestResultsHumanList;
 import com.example.apple.test_app.data.viewdata.HumanData;
+import com.example.apple.test_app.manager.networkmanager.NetworkManager;
 import com.example.apple.test_app.view.LoadMoreView;
 import com.example.apple.test_app.widget.HumanListAdapter;
+import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import cn.iwgang.familiarrecyclerview.FamiliarRecyclerView;
 import cn.iwgang.familiarrecyclerview.FamiliarRefreshRecyclerView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HumanResourceFragment extends Fragment {
     private final static int LOAD_MORE_TAG = 1;
+    private final static String KEY_DEPARTMENTNAME = "KEY_DEPARTMENTNAME";
+    private final static int RC_HUMANADD = 100;
+
     Button developeroneteamlist_button;
-    Button developertwoteamlist_button;
+    Button managementteamlist_button;
     TextView what_select_list_info_text;
     FloatingActionButton topup_button;
     /**
@@ -45,6 +71,7 @@ public class HumanResourceFragment extends Fragment {
      * List Flag
      **/
     int list_flag = 0; //기본 0//
+    int flag_department = 0; //0이면 개발팀 / 1이면 경영팀//
     /**
      * Scroll처리 관련 변수
      **/
@@ -53,8 +80,83 @@ public class HumanResourceFragment extends Fragment {
     boolean firstDragFlag = true;
     boolean motionFlag = true;
     boolean dragFlag = false; //현재 터치가 드래그인지 먼저 확인//
+    NetworkManager networkManager;
+    ImageButton humanadd_button;
     private FamiliarRefreshRecyclerView human_list;
     private FamiliarRecyclerView recyclerview;
+    private ProgressDialog pDialog;
+    private Callback requestuserlistcallback = new Callback() {
+        @Override
+        public void onFailure(Call call, IOException e) {
+            //네트워크 자체에서의 에러상황.//
+            Log.d("ERROR Message : ", e.getMessage());
+
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        hidepDialog();
+
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                        alertDialog.setTitle("People Search")
+                                .setMessage("요청에러 (네트워크 상태를 점검해주세요.)")
+                                .setCancelable(false)
+                                .setPositiveButton("확인",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                            }
+                                        });
+
+                        AlertDialog alert = alertDialog.create();
+                        alert.show();
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onResponse(Call call, Response response) throws IOException {
+            final String responseData = response.body().string();
+
+            Log.d("json data", responseData);
+
+            Gson gson = new Gson();
+
+            UserListRequest userlistRequest = gson.fromJson(responseData, UserListRequest.class);
+
+            int list_count = Integer.parseInt(userlistRequest.getCount()); //리스트의 개수 반환//
+
+            if (list_count == 0) {
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            hidepDialog();
+
+                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                            alertDialog.setTitle("People Search")
+                                    .setMessage("인사기록 정보가 없습니다. 사원을 등록해주세요")
+                                    .setCancelable(false)
+                                    .setPositiveButton("확인",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                }
+                                            });
+
+                            AlertDialog alert = alertDialog.create();
+                            alert.show();
+                        }
+                    });
+                }
+            } else if (list_count > 0) {
+                set_Humandata(userlistRequest.getResults().getHumanList(), userlistRequest.getResults().getHumanList().length);
+            }
+        }
+    };
 
     public HumanResourceFragment() {
         // Required empty public constructor
@@ -78,6 +180,10 @@ public class HumanResourceFragment extends Fragment {
 
         topup_button.setVisibility(View.GONE); //처음에 위로가기 버튼을 보이지 않는다.//
 
+        pDialog = new ProgressDialog(getActivity());
+        pDialog.setMessage("Please wait...");
+        pDialog.setCancelable(false);
+
         /** RecyclerView 정의 **/
         //RefreshRecyclerView 기능설정.//
         human_list.setId(android.R.id.list);
@@ -96,8 +202,11 @@ public class HumanResourceFragment extends Fragment {
 
         //해당 위젯들 정의.//
         developeroneteamlist_button = (Button) humanlist_headerview.findViewById(R.id.developeroneteamlist_button);
-        developertwoteamlist_button = (Button) humanlist_headerview.findViewById(R.id.developertwoteamlist_button);
+        managementteamlist_button = (Button) humanlist_headerview.findViewById(R.id.developertwoteamlist_button);
         what_select_list_info_text = (TextView) humanlist_headerview.findViewById(R.id.select_list_info_text);
+        humanadd_button = (ImageButton) humanlist_headerview.findViewById(R.id.humanadd_button);
+
+        humanadd_button.setVisibility(View.GONE);
 
         what_select_list_info_text.setVisibility(View.GONE);
 
@@ -110,6 +219,27 @@ public class HumanResourceFragment extends Fragment {
         humanListAdapter = new HumanListAdapter(getActivity());
 
         recyclerview.setAdapter(humanListAdapter);
+
+        /** 사람 추가 버튼 **/
+        humanadd_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //개발팀인지 경영팀인지 구분//
+                String departmentname = "";
+
+                if (flag_department == 0) {
+                    departmentname = "Developement part";
+                } else if (flag_department == 1) {
+                    departmentname = "Management part";
+                }
+
+                Intent intent = new Intent(getActivity(), HumanAddActivity.class);
+
+                intent.putExtra(KEY_DEPARTMENTNAME, departmentname);
+
+                startActivityForResult(intent, RC_HUMANADD);
+            }
+        });
 
         /** RecyclerView Item Click Listener **/
         human_list.setOnItemClickListener(new FamiliarRecyclerView.OnItemClickListener() {
@@ -139,7 +269,7 @@ public class HumanResourceFragment extends Fragment {
 
                                 humanListAdapter.set_HumanData(humanData); //초기화된 정보를 갱신//
                             }
-                        } else if (list_flag == 1) //개발1팀 리스트 초기화//
+                        } else if (list_flag == 1) //개발팀 리스트 초기화//
                         {
                             if (humanData.getHumanDataList().size() > 0) {
                                 humanData.getHumanDataList().clear(); //리스트 정보 초기화//
@@ -147,8 +277,8 @@ public class HumanResourceFragment extends Fragment {
                                 humanListAdapter.set_HumanData(humanData); //초기화된 정보를 갱신//
                             }
 
-                            set_HumanDummyData(list_flag);
-                        } else if (list_flag == 2) //개발2팀 리스트 초기화//
+                            get_HumanData(list_flag);
+                        } else if (list_flag == 2) //경영팀 리스트 초기화//
                         {
                             if (humanData.getHumanDataList().size() > 0) {
                                 humanData.getHumanDataList().clear(); //리스트 정보 초기화//
@@ -156,7 +286,7 @@ public class HumanResourceFragment extends Fragment {
                                 humanListAdapter.set_HumanData(humanData); //초기화된 정보를 갱신//
                             }
 
-                            set_HumanDummyData(list_flag);
+                            get_HumanData(list_flag);
                         }
 
                     }
@@ -246,30 +376,86 @@ public class HumanResourceFragment extends Fragment {
         developeroneteamlist_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "개발1팀 리스트 정보출력", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "개발팀 리스트 정보출력", Toast.LENGTH_SHORT).show();
 
-                what_select_list_info_text.setText("개발1팀 리스트정보");
+                humanadd_button.setVisibility(View.VISIBLE);
+                flag_department = 0;
+
+                what_select_list_info_text.setText("개발팀 리스트정보");
                 what_select_list_info_text.setVisibility(View.VISIBLE);
                 list_flag = 1;
 
-                set_HumanDummyData(list_flag);
+                //set_HumanDummyData(list_flag);
+                showpDialog();
+                //네트워크로 데이터를 불러온다.//
+
+                if (humanData.getHumanDataList().size() > 0) {
+                    humanData.getHumanDataList().clear(); //리스트 정보 초기화//
+
+                    humanListAdapter.set_HumanData(humanData); //초기화된 정보를 갱신//
+                }
+
+                get_HumanData(list_flag);
             }
         });
 
-        developertwoteamlist_button.setOnClickListener(new View.OnClickListener() {
+        managementteamlist_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "개발2팀 리스트 정보출력", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "경영팀 리스트 정보출력", Toast.LENGTH_SHORT).show();
 
-                what_select_list_info_text.setText("개발2팀 리스트정보");
+                humanadd_button.setVisibility(View.VISIBLE);
+                flag_department = 1;
+
+                what_select_list_info_text.setText("경영팀 리스트정보");
                 what_select_list_info_text.setVisibility(View.VISIBLE);
                 list_flag = 2;
 
-                set_HumanDummyData(list_flag);
+                //set_HumanDummyData(list_flag);
+
+                //네트워크로 데이터를 불러온다.//
+
+                if (humanData.getHumanDataList().size() > 0) {
+                    humanData.getHumanDataList().clear(); //리스트 정보 초기화//
+
+                    humanListAdapter.set_HumanData(humanData); //초기화된 정보를 갱신//
+                }
+
+                get_HumanData(list_flag);
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_HUMANADD) {
+            if (resultCode == getActivity().RESULT_OK) {
+                //즉시갱신 작업//
+                if (list_flag == 1) //개발팀 리스트 초기화//
+                {
+                    if (humanData.getHumanDataList().size() > 0) {
+                        humanData.getHumanDataList().clear(); //리스트 정보 초기화//
+
+                        humanListAdapter.set_HumanData(humanData); //초기화된 정보를 갱신//
+                    }
+
+                    get_HumanData(list_flag);
+                } else if (list_flag == 2) //경영팀 리스트 초기화//
+                {
+                    if (humanData.getHumanDataList().size() > 0) {
+                        humanData.getHumanDataList().clear(); //리스트 정보 초기화//
+
+                        humanListAdapter.set_HumanData(humanData); //초기화된 정보를 갱신//
+                    }
+
+                    get_HumanData(list_flag);
+                }
+            }
+        }
     }
 
     public void init_HumanListData() {
@@ -280,51 +466,86 @@ public class HumanResourceFragment extends Fragment {
         }
     }
 
-    public void set_HumanDummyData(int list_flag) {
-        init_HumanListData(); //정보를 우선 초기화//
+    public void get_HumanData(int list_flag) {
+        String condition_str = "";
 
-        //각 10개의 더미 데이터 설정.//
-        if (list_flag == 1) //개발1팀 정보//
+        //부서는 고정이니 조건으로 설정//
+        if (list_flag == 1)
         {
-            for (int i = 0; i < 10; i++) {
-                HumanData new_humandata = new HumanData();
-                String dummy_human_imageurl = "https://my-project-1-1470720309181.appspot.com/displayimage?imageid=AMIfv95i7QqpWTmLDE7kqw3txJPVAXPWCNd3Mz4rfBlAZ8HVZHmvjqQGlFy5oz1pWgUpxnwnXOrebTBd7nHoTaVUngSzFilPTtbelOn1SwPuBMt_IgtFRKAt3b0oPblW0j542SFVZHCNbSkb4d9P9U221kumJhC_ZwCO85PXq5-oMdxl6Yn6-F4";
-
-                new_humandata.setHuman_id(1);
-                new_humandata.setHuman_address("경기도 수원시 장안구");
-                new_humandata.setHuman_age(25);
-                new_humandata.setHuman_imageurl(dummy_human_imageurl);
-                new_humandata.setHuman_name("서창욱");
-                new_humandata.setHuman_job("대학생");
-                new_humandata.setHuman_tel("010-xxxx-xxxx");
-
-                //데이터 클래스에 생성된 데이터 정보를 저장//
-                humanData.getHumanDataList().add(new_humandata);
-            }
-
-            //최종적으로 완성된 데이터클래스를 어댑터로 할당//
-            humanListAdapter.set_HumanData(humanData);
+            condition_str = "Developement part";
         } else if (list_flag == 2) {
-            for (int i = 0; i < 10; i++) {
-                HumanData new_humandata = new HumanData();
-                String dummy_human_imageurl = "https://my-project-1-1470720309181.appspot.com/displayimage?imageid=AMIfv95i7QqpWTmLDE7kqw3txJPVAXPWCNd3Mz4rfBlAZ8HVZHmvjqQGlFy5oz1pWgUpxnwnXOrebTBd7nHoTaVUngSzFilPTtbelOn1SwPuBMt_IgtFRKAt3b0oPblW0j542SFVZHCNbSkb4d9P9U221kumJhC_ZwCO85PXq5-oMdxl6Yn6-F4";
+            condition_str = "Management part";
+        }
 
-                new_humandata.setHuman_id(2);
-                new_humandata.setHuman_address("경기도 수원시 팔달구");
-                new_humandata.setHuman_age(25);
-                new_humandata.setHuman_imageurl(dummy_human_imageurl);
-                new_humandata.setHuman_name("홍길동");
-                new_humandata.setHuman_job("직장인");
-                new_humandata.setHuman_tel("010-xxxx-xxxx");
+        //네트워크 설정//
+        /** Networok 설정 **/
+        networkManager = NetworkManager.getInstance();
 
-                //데이터 클래스에 생성된 데이터 정보를 저장//
-                humanData.getHumanDataList().add(new_humandata);
-            }
+        OkHttpClient client = networkManager.getClient();
 
-            //최종적으로 완성된 데이터클래스를 어댑터로 할당//
-            humanListAdapter.set_HumanData(humanData);
+        /** POST방식의 프로토콜 요청 설정 **/
+        /** URL 설정 **/
+        HttpUrl.Builder builder = new HttpUrl.Builder();
+
+        builder.scheme("http"); //스킴정의(Http / Https)//
+        builder.host(getResources().getString(R.string.server_domain)); //host정의.//
+        builder.port(8080);
+        builder.addPathSegment("DummyServer_Blog");
+        builder.addPathSegment("userlist.jsp");
+
+        //Body설정//
+        FormBody.Builder formBuilder = new FormBody.Builder()
+                .add("departmentname", condition_str);
+
+        /** RequestBody 설정(파일 전송 시 Multipart로 설정) **/
+        RequestBody body = formBuilder.build();
+
+        /** Request 설정 **/
+        Request request = new Request.Builder()
+                .url(builder.build())
+                .post(body) //POST방식 적용.//
+                .tag(getActivity())
+                .build();
+
+        /** 비동기 방식(enqueue)으로 Callback 구현 **/
+        client.newCall(request).enqueue(requestuserlistcallback);
+    }
+
+    public void set_Humandata(final UserListRequestResultsHumanList[] humanList, final int length) {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    hidepDialog();
+
+                    List<UserListRequestResultsHumanList> userlist = new ArrayList<>();
+
+                    userlist.addAll(Arrays.asList(humanList));
+
+                    for (int i = 0; i < length; i++) {
+                        HumanData new_human = new HumanData();
+
+                        new_human.setHuman_imageurl(userlist.get(i).getHuman_imageurl());
+                        new_human.setHuman_job(userlist.get(i).getHuman_job());
+                        new_human.setHuman_name(userlist.get(i).getHuman_name());
+                        new_human.setHuman_address(userlist.get(i).getHuman_address());
+                        new_human.setHuman_tel(userlist.get(i).getHuman_tel());
+                        new_human.setHuman_age(Integer.parseInt(userlist.get(i).getHuman_age()));
+                        new_human.setHuman_id(Integer.parseInt(userlist.get(i).getHuman_id()));
+                        new_human.setHuman_department(userlist.get(i).getHuman_department());
+                        new_human.setHuman_emailaddress(userlist.get(i).getHuman_emailaddress());
+                        new_human.setHuman_etcinfo(userlist.get(i).getHuman_etcinfo());
+                        new_human.setHuman_introduction(userlist.get(i).getHuman_introduction());
+
+                        humanData.humanDataList.add(new_human);
+                    }
+
+                    humanListAdapter.set_HumanData(humanData);
+                }
+            });
         }
     }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -342,5 +563,15 @@ public class HumanResourceFragment extends Fragment {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showpDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hidepDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
     }
 }

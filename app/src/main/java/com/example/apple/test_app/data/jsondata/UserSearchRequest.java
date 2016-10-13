@@ -1,15 +1,14 @@
 package com.example.apple.test_app.data.jsondata;
 
-public class UserInfoRequest {
-    private UserInfoRequestResult result;
-
+public class UserSearchRequest {
+    private UserSearchRequestResult result;
     private String is_success;
 
-    public UserInfoRequestResult getResult() {
+    public UserSearchRequestResult getResult() {
         return this.result;
     }
 
-    public void setResult(UserInfoRequestResult result) {
+    public void setResult(UserSearchRequestResult result) {
         this.result = result;
     }
 
