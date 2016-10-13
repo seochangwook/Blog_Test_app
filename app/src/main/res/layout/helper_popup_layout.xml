@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/popup_background"
+    card:cardCornerRadius="8dp"
+    card:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp">
+
+            <ImageButton
+                android:id="@+id/helper_option_1_button"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="35dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/button_transparent_background"
+                android:src="@mipmap/ic_launcher" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="57dp"
+                android:layout_marginTop="80dp"
+                android:text="임종체험"
+                android:textColor="@color/white_color"
+                android:textSize="10dp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/helper_option_2_button"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="140dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/button_transparent_background"
+                android:src="@mipmap/ic_launcher" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="155dp"
+                android:layout_marginTop="80dp"
+                android:text="상담센터찾기"
+                android:textColor="@color/white_color"
+                android:textSize="10dp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/helper_option_3_button"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="245dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/button_transparent_background"
+                android:src="@mipmap/ic_launcher" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="257dp"
+                android:layout_marginTop="80dp"
+                android:text="자기진잔테스트"
+                android:textColor="@color/white_color"
+                android:textSize="10dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

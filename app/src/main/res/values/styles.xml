@@ -26,4 +26,10 @@
 
     <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!-- 팝업창 애니메이션 -->
+    <style name="PopupAnimationTop" mce_bogus="1" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@animator/popup_topin</item>
+        <item name="android:windowExitAnimation">@animator/popup_topout</item>
+    </style>
+
 </resources>

@@ -22,6 +22,10 @@
         <activity
             android:name=".HumanAddActivity"
             android:label="@string/title_activity_human_add"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".HumanInfoUpdate"
+            android:label="@string/title_activity_human_info_update"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

@@ -34,7 +34,7 @@ public class HumanListViewHolder extends RecyclerView.ViewHolder {
         human_job_text = (TextView) itemView.findViewById(R.id.human_job_text);
         human_tel_text = (TextView) itemView.findViewById(R.id.human_tel_text);
         human_image = (ImageView) itemView.findViewById(R.id.human_image);
-        human_info_button = (ImageButton) itemView.findViewById(R.id.human_info_button);
+        human_info_button = (ImageButton) itemView.findViewById(R.id.human_edit_button);
     }
 
     public void set_Human_info(HumanData human_data, Context context) {

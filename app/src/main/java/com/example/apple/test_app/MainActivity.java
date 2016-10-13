@@ -1,14 +1,18 @@
 package com.example.apple.test_app;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.example.apple.test_app.fragment.HumanResourceFragment;
@@ -36,6 +41,12 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
 
     Toolbar toolbar; //툴바//
+    PopupWindow helper_popup; //팝업//
+    View helper_popupview;
+
+    ImageButton helper_option_1;
+    ImageButton helper_option_2;
+    ImageButton helper_option_3;
 
     //검색결과//
     String search_value;
@@ -61,6 +72,29 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar); //툴바 생성.(액션바 -> 툴바)//
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); //HomeAsUp버튼 설정//
         getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_menu);
+
+        /** 팝업 메뉴 설정 **/
+        helper_popupview = getLayoutInflater().inflate(R.layout.helper_popup_layout, null);
+
+        //팝업 뷰에 있는 위젯참조//
+        helper_option_1 = (ImageButton) helper_popupview.findViewById(R.id.helper_option_1_button);
+
+        //팝업창 설정.//
+        helper_popup = new PopupWindow(helper_popupview, ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT, true);
+        helper_popup.setTouchable(true);
+        helper_popup.setOutsideTouchable(true);
+        helper_popup.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
+        helper_popup.setAnimationStyle(R.style.PopupAnimationTop);
+        helper_popup.getContentView().setFocusableInTouchMode(true);
+        helper_popup.getContentView().setFocusable(true);
+
+        //팝어업 위젯 이벤트 처리//
+        helper_option_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "임종체험 선택", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         human_list_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,6 +162,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(MainActivity.this, "도움말 버튼", Toast.LENGTH_SHORT).show();
+
+                /** View Popup **/
+                //NO_GRAVITYY는 사용자 정의 위치로 지정//
+                helper_popup.showAtLocation(findViewById(R.id.help_menu_button), Gravity.NO_GRAVITY, 320, 320); //팝업창 띄우기//
             }
         });
 

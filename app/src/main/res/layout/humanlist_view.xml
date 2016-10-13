@@ -74,13 +74,13 @@
                 android:textSize="15dp" />
 
             <ImageButton
-                android:id="@+id/human_info_button"
+                android:id="@+id/human_edit_button"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginLeft="265dp"
                 android:layout_marginTop="28dp"
                 android:background="@color/button_transparent_background"
-                android:src="@android:drawable/ic_dialog_info" />
+                android:src="@android:drawable/ic_menu_edit" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

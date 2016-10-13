@@ -15,4 +15,6 @@
     <color name="button_transparent_background">#00000000</color>
     <color name="drawer_background">#FFFFFF</color>
 
+    <color name="popup_background">#A1000000</color>
+
 </resources>

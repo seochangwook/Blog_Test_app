@@ -432,9 +432,14 @@ public class HumanResourceFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        humanListAdapter.onActivityResult(requestCode, resultCode, data); //어댑터로 콜백//
+
         if (requestCode == RC_HUMANADD) {
             if (resultCode == getActivity().RESULT_OK) {
                 //즉시갱신 작업//
+
+                Toast.makeText(getActivity(), "이미지가 보이지 않을 경우 새로고침(위로당기기) 해주세요.", Toast.LENGTH_SHORT).show();
+
                 if (list_flag == 1) //개발팀 리스트 초기화//
                 {
                     if (humanData.getHumanDataList().size() > 0) {
