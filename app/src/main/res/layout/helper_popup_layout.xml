@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="57dp"
                 android:layout_marginTop="80dp"
-                android:text="임종체험"
+                android:text="기능소개"
                 android:textColor="@color/white_color"
                 android:textSize="10dp"
                 android:textStyle="bold" />
@@ -51,9 +51,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="155dp"
+                android:layout_marginLeft="162dp"
                 android:layout_marginTop="80dp"
-                android:text="상담센터찾기"
+                android:text="개발정보"
                 android:textColor="@color/white_color"
                 android:textSize="10dp"
                 android:textStyle="bold" />
@@ -71,9 +71,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="257dp"
+                android:layout_marginLeft="267dp"
                 android:layout_marginTop="80dp"
-                android:text="자기진잔테스트"
+                android:text="문의사항"
                 android:textColor="@color/white_color"
                 android:textSize="10dp"
                 android:textStyle="bold" />

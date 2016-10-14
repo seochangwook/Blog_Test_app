@@ -1,4 +1,4 @@
-package com.example.apple.test_app.data.jsondata;
+package com.example.apple.test_app.data.jsondata.usercrud;
 
 public class UserAddRequest {
     private UserAddRequestResult result;

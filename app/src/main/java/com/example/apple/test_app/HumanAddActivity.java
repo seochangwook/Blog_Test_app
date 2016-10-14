@@ -21,7 +21,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.apple.test_app.data.jsondata.UserAddRequest;
+import com.example.apple.test_app.data.jsondata.usercrud.UserAddRequest;
 import com.example.apple.test_app.manager.networkmanager.NetworkManager;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -76,7 +76,7 @@ public class HumanAddActivity extends AppCompatActivity {
                         hidepDialog();
 
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(HumanAddActivity.this);
-                        alertDialog.setTitle("People Search")
+                        alertDialog.setTitle("People Enroll")
                                 .setMessage("요청에러 (네트워크 상태를 점검해주세요.)")
                                 .setCancelable(false)
                                 .setPositiveButton("확인",
@@ -115,14 +115,13 @@ public class HumanAddActivity extends AppCompatActivity {
                             hidepDialog();
 
                             AlertDialog.Builder alertDialog = new AlertDialog.Builder(HumanAddActivity.this);
-                            alertDialog.setTitle("People Search")
+                            alertDialog.setTitle("People Enroll")
                                     .setMessage("사원등록 완료")
                                     .setCancelable(false)
                                     .setPositiveButton("확인",
                                             new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                                    setResult(RESULT_OK);
 
                                                     finish();
                                                 }
@@ -142,7 +141,7 @@ public class HumanAddActivity extends AppCompatActivity {
                             hidepDialog();
 
                             AlertDialog.Builder alertDialog = new AlertDialog.Builder(HumanAddActivity.this);
-                            alertDialog.setTitle("People Search")
+                            alertDialog.setTitle("People Enroll")
                                     .setMessage("사원등록 실패(이미 등록된 사원입니다.)")
                                     .setCancelable(false)
                                     .setPositiveButton("확인",
@@ -258,6 +257,8 @@ public class HumanAddActivity extends AppCompatActivity {
     public void Enroll() {
         //이름을 가지고 예외처리//
         if (name_edittext.getText().toString().equals("")) {
+            hidepDialog();
+
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(HumanAddActivity.this);
             alertDialog.setTitle("People Search")
                     .setMessage("이름을 입력하지 않았습니다. (필수입력)")
@@ -353,6 +354,9 @@ public class HumanAddActivity extends AppCompatActivity {
         if (item_id == R.id.enroll_menubutton) {
             //네트워크 작업(등록)//
             /** 인사정보 등록 **/
+
+            showpDialog();
+
             Enroll();
         }
 

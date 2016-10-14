@@ -1,10 +1,8 @@
 package com.example.apple.test_app.widget;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +23,6 @@ public class HumanListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private static final String KEY_HUMANDEPARTMENT = "KEY_HUMANDEPARTMENT";
     private static final String KEY_HUMANADDRESS = "KEY_HUMANADDRESS";
     private static final String KEY_HUMANTEL = "KEY_HUMANTEL";
-
-    private static final int RC_UPDATE = 200;
 
     //데이터 클래스 정의//
     HumanData humanData;
@@ -94,7 +90,7 @@ public class HumanListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         intent.putExtra(KEY_HUMANNAME, select_human_name);
                         intent.putExtra(KEY_HUMANTEL, select_human_tel);
 
-                        ((Activity) context).startActivityForResult(intent, RC_UPDATE);
+                        context.startActivity(intent);
                     }
                 });
 
@@ -115,18 +111,5 @@ public class HumanListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         //현재 리스트에 등록된 개수만큼 반환//
         return humanData.getHumanDataList().size();
-    }
-
-    //Adapter에서는 onActivityResult를 사용할 수 없으므로 Activity에서 콜백형식으로 이벤트를 받는다.//
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("MyAdapter", "onActivityResult");
-
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == RC_UPDATE) {
-                Log.d("json data", "인사 정보 수정 완료");
-
-                notifyDataSetChanged();
-            }
-        }
     }
 }

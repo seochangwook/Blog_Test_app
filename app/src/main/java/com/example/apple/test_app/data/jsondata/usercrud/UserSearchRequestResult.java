@@ -1,4 +1,4 @@
-package com.example.apple.test_app.data.jsondata;
+package com.example.apple.test_app.data.jsondata.usercrud;
 
 public class UserSearchRequestResult {
     private String human_id;

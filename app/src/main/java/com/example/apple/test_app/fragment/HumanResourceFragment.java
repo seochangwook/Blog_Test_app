@@ -4,14 +4,18 @@ package com.example.apple.test_app.fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,13 +25,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.apple.test_app.HumanAddActivity;
 import com.example.apple.test_app.R;
-import com.example.apple.test_app.data.jsondata.UserListRequest;
-import com.example.apple.test_app.data.jsondata.UserListRequestResultsHumanList;
+import com.example.apple.test_app.data.jsondata.usercrud.UserListRequest;
+import com.example.apple.test_app.data.jsondata.usercrud.UserListRequestResultsHumanList;
 import com.example.apple.test_app.data.viewdata.HumanData;
 import com.example.apple.test_app.manager.networkmanager.NetworkManager;
 import com.example.apple.test_app.view.LoadMoreView;
@@ -56,8 +61,7 @@ import okhttp3.Response;
 public class HumanResourceFragment extends Fragment {
     private final static int LOAD_MORE_TAG = 1;
     private final static String KEY_DEPARTMENTNAME = "KEY_DEPARTMENTNAME";
-    private final static int RC_HUMANADD = 100;
-
+    View view;
     Button developeroneteamlist_button;
     Button managementteamlist_button;
     TextView what_select_list_info_text;
@@ -82,6 +86,14 @@ public class HumanResourceFragment extends Fragment {
     boolean dragFlag = false; //현재 터치가 드래그인지 먼저 확인//
     NetworkManager networkManager;
     ImageButton humanadd_button;
+    /**
+     * Popup관련 변수
+     **/
+    PopupWindow helper_popup; //팝업//
+    View helper_popupview;
+    ImageButton helper_option_1;
+    ImageButton helper_option_2;
+    ImageButton helper_option_3;
     private FamiliarRefreshRecyclerView human_list;
     private FamiliarRecyclerView recyclerview;
     private ProgressDialog pDialog;
@@ -173,7 +185,7 @@ public class HumanResourceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_human_resource, container, false);
+        view = inflater.inflate(R.layout.fragment_human_resource, container, false);
 
         human_list = (FamiliarRefreshRecyclerView) view.findViewById(R.id.human_info_list);
         topup_button = (FloatingActionButton) view.findViewById(R.id.scroll_up_fabbutton);
@@ -195,6 +207,45 @@ public class HumanResourceFragment extends Fragment {
         recyclerview = human_list.getFamiliarRecyclerView();
         recyclerview.setItemAnimator(new DefaultItemAnimator());
         recyclerview.setHasFixedSize(true);
+
+        /** Popup설정 **/
+        helper_popupview = getActivity().getLayoutInflater().inflate(R.layout.helper_popup_layout, null);
+
+        //팝업 뷰에 있는 위젯참조//
+        helper_option_1 = (ImageButton) helper_popupview.findViewById(R.id.helper_option_1_button);
+        helper_option_2 = (ImageButton) helper_popupview.findViewById(R.id.helper_option_2_button);
+        helper_option_3 = (ImageButton) helper_popupview.findViewById(R.id.helper_option_3_button);
+
+        //팝업창 설정.//
+        helper_popup = new PopupWindow(helper_popupview, ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT, true);
+        helper_popup.setTouchable(true);
+        helper_popup.setOutsideTouchable(true);
+        helper_popup.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
+        helper_popup.setAnimationStyle(R.style.PopupAnimationTop);
+        helper_popup.getContentView().setFocusableInTouchMode(true);
+        helper_popup.getContentView().setFocusable(true);
+
+        //팝어업 위젯 이벤트 처리//
+        helper_option_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "기능소개", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        helper_option_2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "개발정보", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        helper_option_3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "문의사항", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         /** RecyclerView의 각종 뷰 정의(HeaderView, EmptyView, FooterView) **/
         View humanlist_headerview = LayoutInflater.from(getActivity()).inflate(R.layout.humanlist_headerview, null);
@@ -237,7 +288,7 @@ public class HumanResourceFragment extends Fragment {
 
                 intent.putExtra(KEY_DEPARTMENTNAME, departmentname);
 
-                startActivityForResult(intent, RC_HUMANADD);
+                startActivity(intent); //따로 반환값을 등록하지 않아도 되는 이유는 프래그먼트의 생애주기인 onResume()을 사용//
             }
         });
 
@@ -428,49 +479,6 @@ public class HumanResourceFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        humanListAdapter.onActivityResult(requestCode, resultCode, data); //어댑터로 콜백//
-
-        if (requestCode == RC_HUMANADD) {
-            if (resultCode == getActivity().RESULT_OK) {
-                //즉시갱신 작업//
-
-                Toast.makeText(getActivity(), "이미지가 보이지 않을 경우 새로고침(위로당기기) 해주세요.", Toast.LENGTH_SHORT).show();
-
-                if (list_flag == 1) //개발팀 리스트 초기화//
-                {
-                    if (humanData.getHumanDataList().size() > 0) {
-                        humanData.getHumanDataList().clear(); //리스트 정보 초기화//
-
-                        humanListAdapter.set_HumanData(humanData); //초기화된 정보를 갱신//
-                    }
-
-                    get_HumanData(list_flag);
-                } else if (list_flag == 2) //경영팀 리스트 초기화//
-                {
-                    if (humanData.getHumanDataList().size() > 0) {
-                        humanData.getHumanDataList().clear(); //리스트 정보 초기화//
-
-                        humanListAdapter.set_HumanData(humanData); //초기화된 정보를 갱신//
-                    }
-
-                    get_HumanData(list_flag);
-                }
-            }
-        }
-    }
-
-    public void init_HumanListData() {
-        if (humanData.getHumanDataList().size() > 0) {
-            humanData.getHumanDataList().clear(); //리스트 정보 초기화//
-
-            humanListAdapter.set_HumanData(humanData); //초기화된 정보를 갱신//
-        }
-    }
-
     public void get_HumanData(int list_flag) {
         String condition_str = "";
 
@@ -551,6 +559,35 @@ public class HumanResourceFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Toast.makeText(getActivity(), "이미지가 보이지 않을 시 새로고침(당기기) 해주세요", Toast.LENGTH_SHORT).show();
+
+        Log.d("json data :", "onresume");
+
+        //수정이나 삭제가 되었을 시 다시 프래그먼트로 돌아오면 초기화//
+        if (list_flag == 1) //개발팀 리스트 초기화//
+        {
+            if (humanData.getHumanDataList().size() > 0) {
+                humanData.getHumanDataList().clear(); //리스트 정보 초기화//
+
+                humanListAdapter.set_HumanData(humanData); //초기화된 정보를 갱신//
+            }
+
+            get_HumanData(list_flag); //데이터 Reload//
+        } else if (list_flag == 2) //경영팀 리스트 초기화//
+        {
+            if (humanData.getHumanDataList().size() > 0) {
+                humanData.getHumanDataList().clear(); //리스트 정보 초기화//
+
+                humanListAdapter.set_HumanData(humanData); //초기화된 정보를 갱신//
+            }
+
+            get_HumanData(list_flag);
+        }
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -564,7 +601,8 @@ public class HumanResourceFragment extends Fragment {
         int item_id = item.getItemId();
 
         if (item_id == R.id.help_menuitem) {
-            Toast.makeText(getActivity(), "도움말 버튼", Toast.LENGTH_SHORT).show();
+            //getView()를 이용하여 현재의 뷰를 가져온다.(프래그먼트에서 상위 액티비티는 getActivity()이고, 현재의 뷰는 getView())//
+            helper_popup.showAtLocation(getView(), Gravity.NO_GRAVITY, 320, 320);
         }
 
         return super.onOptionsItemSelected(item);

@@ -1,4 +1,4 @@
-package com.example.apple.test_app.data.jsondata;
+package com.example.apple.test_app.data.jsondata.usercrud;
 
 public class UserListRequest {
     private String count;

@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.example.apple.test_app.fragment.HumanResourceFragment;
 import com.example.apple.test_app.fragment.OverseasSalesTeamFragment;
 import com.example.apple.test_app.fragment.SearchInfoFragment;
+import com.example.apple.test_app.widget.HumanListAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
     //검색결과//
     String search_value;
 
-    int count = 0;
+    //어댑터//
+    HumanListAdapter humanListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
 
         //팝업 뷰에 있는 위젯참조//
         helper_option_1 = (ImageButton) helper_popupview.findViewById(R.id.helper_option_1_button);
+        helper_option_2 = (ImageButton) helper_popupview.findViewById(R.id.helper_option_2_button);
+        helper_option_3 = (ImageButton) helper_popupview.findViewById(R.id.helper_option_3_button);
 
         //팝업창 설정.//
         helper_popup = new PopupWindow(helper_popupview, ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT, true);
@@ -92,9 +96,25 @@ public class MainActivity extends AppCompatActivity {
         helper_option_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "임종체험 선택", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "기능소개", Toast.LENGTH_SHORT).show();
             }
         });
+
+        helper_option_2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "개발정보", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        helper_option_3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "문의사항", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        humanListAdapter = new HumanListAdapter(this);
 
         human_list_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         app_help_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "도움말 버튼", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "도움말 버튼", Toast.LENGTH_SHORT).show();
 
                 /** View Popup **/
                 //NO_GRAVITYY는 사용자 정의 위치로 지정//

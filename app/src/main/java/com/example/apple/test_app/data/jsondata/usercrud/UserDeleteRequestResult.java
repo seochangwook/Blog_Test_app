@@ -1,6 +1,6 @@
-package com.example.apple.test_app.data.jsondata;
+package com.example.apple.test_app.data.jsondata.usercrud;
 
-public class UserAddRequestResult {
+public class UserDeleteRequestResult {
     private boolean is_save;
 
     public boolean getIs_save() {
