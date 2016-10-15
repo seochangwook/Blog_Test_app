@@ -120,8 +120,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //해당 프래그먼트로 변경(replace)해준다.//
-                getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, new HumanResourceFragment()
-                ).setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                        .replace(R.id.layout_container, new HumanResourceFragment())
+                        .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                         .commit();
 
                 app_help_button.setVisibility(View.GONE);
@@ -134,8 +137,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //해당 프래그먼트로 변경(replace)해준다.//
-                getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, new OverseasSalesTeamFragment()
-                ).setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
+                        .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .replace(R.id.layout_container, new OverseasSalesTeamFragment())
                         .commit();
 
                 app_help_button.setVisibility(View.GONE);
@@ -270,9 +276,14 @@ public class MainActivity extends AppCompatActivity {
                 args.putString(KEY_VALUE, search_value);
                 searchInfoFragment.setArguments(args);
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, searchInfoFragment
-                ).setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack(null) //백스택 등록//
-                        .commit();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                        .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .replace(R.id.layout_container, searchInfoFragment)
+                        .addToBackStack(null)//백스택 등록//
+                        .commit(); //마지막 commit으로 적용.//
+
 
                 flag = 1; //백스택을 필요로 하는 곳에서 특정 플래그를 준다.//
 

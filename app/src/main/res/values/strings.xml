@@ -8,7 +8,7 @@
     <string name="load_more_normal_main">정보 더보기</string>
     <string name="load_more_loading_main">정보검색 중...</string>
 
-    <string name="server_domain">192.168.0.4</string>
+    <string name="server_domain">192.168.0.7</string>
     <string name="title_activity_human_add">인사정보 등록</string>
     <string name="title_activity_human_info_update">인사정보 수정</string>
 </resources>
