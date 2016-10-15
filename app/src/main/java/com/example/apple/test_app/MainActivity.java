@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 //해당 프래그먼트로 변경(replace)해준다.//
                 getSupportFragmentManager()
                         .beginTransaction()
+                        //옆으로 슬라이드 되는 애니메이션 적용//
                         .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .replace(R.id.layout_container, new HumanResourceFragment())
                         .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
