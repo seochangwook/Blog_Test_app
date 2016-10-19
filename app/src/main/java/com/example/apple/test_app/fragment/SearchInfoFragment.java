@@ -246,6 +246,7 @@ public class SearchInfoFragment extends Fragment {
         builder.host(getResources().getString(R.string.server_domain)); //host정의.//
         builder.port(8080);
         builder.addPathSegment("DummyServer_Blog");
+        builder.addPathSegment("UserInfo");
         builder.addPathSegment("usersearch.jsp");
 
         //Body설정//

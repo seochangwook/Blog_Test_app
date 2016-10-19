@@ -256,6 +256,17 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.closeDrawer(GravityCompat.START);
     }
 
+    @Override
+    public void onBackPressed() //백키 제어//
+    {
+        //현재 드로워블 레이아웃이 열려있으면 백키 시 닫아준다.//
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else { //닫혀져있다면 원래의 백키 기능을 수행//
+            super.onBackPressed();
+        }
+    }
+
     /**
      * EditText Key이벤트 등록
      **/

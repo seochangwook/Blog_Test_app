@@ -362,6 +362,7 @@ public class HumanInfoUpdate extends AppCompatActivity {
         builder.host(getResources().getString(R.string.server_domain)); //host정의.//
         builder.port(8080);
         builder.addPathSegment("DummyServer_Blog");
+        builder.addPathSegment("UserInfo");
         builder.addPathSegment("usermodify.jsp");
 
         /** 파일 전송이므로 MultipartBody 설정 **/
@@ -409,6 +410,7 @@ public class HumanInfoUpdate extends AppCompatActivity {
         builder.host(getResources().getString(R.string.server_domain)); //host정의.//
         builder.port(8080);
         builder.addPathSegment("DummyServer_Blog");
+        builder.addPathSegment("UserInfo");
         builder.addPathSegment("userdelete.jsp");
 
         //Body설정//
