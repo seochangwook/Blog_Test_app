@@ -65,6 +65,29 @@ public class Option1Fragment extends Fragment {
             gender_textview.setText(PropertyManager.getInstance().get_user_gender() + " (여성)");
         }
 
+        email_link_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //지메일의 패키지 정보를 불러온다.//
+                PackageManager pm = getActivity().getPackageManager();
+                String packageName = "com.google.android.gm";
+
+                ApplicationInfo ai = null;
+
+                try {
+                    ai = pm.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                String labelName = pm.getApplicationLabel(ai).toString();
+
+                Intent intent = pm.getLaunchIntentForPackage(packageName);
+
+                startActivity(intent);
+            }
+        });
+
         kakaotalk_link_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
