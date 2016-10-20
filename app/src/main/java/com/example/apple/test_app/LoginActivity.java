@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
-
+                                                mLoginManager.logOut(); //로그아웃(처음 로그인 액티비티로 왔을 시 로그인을 해야되는 상황이므로 로그아웃을 확실히 해준다.).//
                                             }
                                         });
 
@@ -141,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
                                             new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialogInterface, int i) {
-
+                                                    mLoginManager.logOut(); //로그아웃(처음 로그인 액티비티로 왔을 시 로그인을 해야되는 상황이므로 로그아웃을 확실히 해준다.).//
                                                 }
                                             });
 
