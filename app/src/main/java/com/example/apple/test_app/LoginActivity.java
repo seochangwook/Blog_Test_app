@@ -9,7 +9,6 @@ import android.content.pm.Signature;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -102,12 +101,23 @@ public class LoginActivity extends AppCompatActivity {
 
             String is_success = loginRequest.getIs_success();
 
-            if (is_success.equals("true")) {
+            if (is_success.equals("true/insert")) {
                 if (this != null) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             hidepDialog();
+
+                            Log.d("json control", "insert user info");
+
+                            //정보저장 전 화면으로 진입을 하면 공유저장소 초기화//
+                            PropertyManager.getInstance().set_user_id("");
+                            PropertyManager.getInstance().set_user_email("");
+                            PropertyManager.getInstance().set_user_facebookid("");
+                            PropertyManager.getInstance().set_user_fcmtoken("");
+                            PropertyManager.getInstance().set_user_gender("");
+                            PropertyManager.getInstance().set_user_profileimageurl("");
+                            PropertyManager.getInstance().set_user_name("");
 
                             //해당 파싱된 정보를 공유 저장소에 저장//
                             PropertyManager.getInstance().set_user_id(loginRequest.getResult().getUser_id());
@@ -117,6 +127,27 @@ public class LoginActivity extends AppCompatActivity {
                             PropertyManager.getInstance().set_user_gender(loginRequest.getResult().getUser_gender());
                             PropertyManager.getInstance().set_user_profileimageurl(loginRequest.getResult().getUser_profileimageurl());
                             PropertyManager.getInstance().set_user_name(loginRequest.getResult().getUser_name());
+
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+
+                            startActivity(intent);
+
+                            finish();
+                        }
+                    });
+                }
+            } else if (is_success.equals("true/update")) {
+                if (this != null) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            hidepDialog();
+
+                            Log.d("json control", "update user info");
+
+                            //(이미 정보 존재 시 수정만 해준다.)공유저장소에 등록될 수정될 내용은 토큰값과 fcm값만 바꾸어 준다.//
+                            PropertyManager.getInstance().set_user_facebookid(access_token);
+                            PropertyManager.getInstance().set_user_fcmtoken(fcm_toekn);
 
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 
@@ -163,15 +194,6 @@ public class LoginActivity extends AppCompatActivity {
         AppEventsLogger.activateApp(this);
 
         setContentView(R.layout.activity_login);
-
-        //로그인 화면으로 진입을 하면 공유저장소 초기화//
-        PropertyManager.getInstance().set_user_id("");
-        PropertyManager.getInstance().set_user_email("");
-        PropertyManager.getInstance().set_user_facebookid("");
-        PropertyManager.getInstance().set_user_fcmtoken("");
-        PropertyManager.getInstance().set_user_gender("");
-        PropertyManager.getInstance().set_user_profileimageurl("");
-        PropertyManager.getInstance().set_user_name("");
 
         facebook_login_button = (ImageButton) findViewById(R.id.facebook_login_button);
 
@@ -306,7 +328,7 @@ public class LoginActivity extends AppCompatActivity {
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
-                Log.d("json KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+                //Log.d("json KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
         } catch (PackageManager.NameNotFoundException e) {
             Log.e("KeyHash:", e.toString());

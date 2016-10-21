@@ -8,7 +8,7 @@
     <string name="load_more_normal_main">정보 더보기</string>
     <string name="load_more_loading_main">정보검색 중...</string>
 
-    <string name="server_domain">192.168.0.15</string>
+    <string name="server_domain">192.168.0.10</string>
     <string name="facebook_app_id">203997303364924</string> <!-- Facebook app id -->
 
     <string name="title_activity_main">Human Resource</string>
