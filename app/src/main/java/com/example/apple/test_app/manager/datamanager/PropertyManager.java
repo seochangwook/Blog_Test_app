@@ -20,8 +20,12 @@ public class PropertyManager {
     //SNS, FCM등의 토큰//
     private static final String KEY_FACEBOOK_ID = "facebookid";
     private static final String KEY_FCM_REG_ID = "fcmtoken";
+    private static final String ALARM_BADGE_NUMBER = "alarm_badge_number"; //배지//
 
     private static PropertyManager instance;
+
+    //FCM알람관련 뱃지카운터.//
+    private static int badge_number = 0;
 
     //공유 프래퍼런스 생성//
     SharedPreferences mPrefs;
@@ -105,5 +109,14 @@ public class PropertyManager {
     public void set_user_fcmtoken(String user_fcmtoken) {
         mEdittor.putString(KEY_FCM_REG_ID, user_fcmtoken);
         mEdittor.commit(); //저장 후 완료한다.//
+    }
+
+    public int get_badge_number() {
+        return mPrefs.getInt(ALARM_BADGE_NUMBER, badge_number);
+    }
+
+    public void setBadge_number(int badge_number) {
+        mEdittor.putInt(ALARM_BADGE_NUMBER, badge_number);
+        mEdittor.commit();
     }
 }

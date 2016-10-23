@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.example.apple.test_app.R;
 import com.example.apple.test_app.SplashActivity;
+import com.example.apple.test_app.manager.datamanager.PropertyManager;
 import com.google.android.gms.gcm.GcmListenerService;
 
 /**
@@ -20,6 +21,7 @@ import com.google.android.gms.gcm.GcmListenerService;
 public class MyGcmListenerService extends GcmListenerService {
 
     private static final String TAG = "MyGcmListenerService";
+    int badge_count;
 
     /**
      * @param from SenderID 값을 받아온다.
@@ -36,6 +38,8 @@ public class MyGcmListenerService extends GcmListenerService {
 
         // GCM으로 받은 메세지를 디바이스에 알려주는 sendNotification()을 호출한다.
         sendNotification(title, message);
+
+        set_alarm_badge(); //배지를 등록//
     }
 
     /**
@@ -63,5 +67,28 @@ public class MyGcmListenerService extends GcmListenerService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
+
+    public void set_alarm_badge() {
+        Log.d("json control", "notify receive");
+
+        Intent intent = new Intent("android.intent.action.BADGE_COUNT_UPDATE");
+
+        //배지의 카운트를 공유저장소로부터 가져온다.//
+        badge_count = PropertyManager.getInstance().get_badge_number();
+        badge_count++; //0으로 되어있기에 1로 만들어준다.//
+        //패키지 이름과 클래그 이름설정.//
+
+        intent.putExtra("badge_count", badge_count);
+
+        //문자열로 대입 가능//
+        intent.putExtra("badge_count_package_name", getApplicationContext().getPackageName()); //패키지 이름//
+        //배지의 적용은 맨 처음 띄우는 화면을 기준으로 한다.//
+        intent.putExtra("badge_count_class_name", SplashActivity.class.getName()); //맨 처음 띄우는 화면 이름//
+
+        //변경된 값으로 다시 공유 저장소 값 초기화.//
+        PropertyManager.getInstance().setBadge_number(badge_count);
+
+        sendBroadcast(intent);
     }
 }

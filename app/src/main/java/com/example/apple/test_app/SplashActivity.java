@@ -136,6 +136,18 @@ public class SplashActivity extends AppCompatActivity {
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
 
+        //배지 카운터 설정(초기화)(기기별 호환문제)//
+        Intent i = new Intent("android.intent.action.BADGE_COUNT_UPDATE");
+
+        i.putExtra("badge_count", 0); //다시 배지카운터를 0으로 초기화.//
+        i.putExtra("badge_count_package_name", getApplicationContext().getPackageName());
+        i.putExtra("badge_count_class_name", SplashActivity.class.getName());
+
+        //변경된 값으로 다시 공유 저장소 값 초기화.//
+        PropertyManager.getInstance().setBadge_number(0);
+
+        sendBroadcast(i); //브로드캐스트를 이용.//
+
         Auto_Login(); //자동로그인//
     }
 
