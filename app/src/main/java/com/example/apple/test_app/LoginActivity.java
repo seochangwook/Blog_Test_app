@@ -1,12 +1,16 @@
 package com.example.apple.test_app;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,6 +21,8 @@ import android.widget.Toast;
 import com.example.apple.test_app.data.jsondata.login.LoginRequest;
 import com.example.apple.test_app.manager.datamanager.PropertyManager;
 import com.example.apple.test_app.manager.networkmanager.NetworkManager;
+import com.example.apple.test_app.service.fcm.QuickstartPreferences;
+import com.example.apple.test_app.service.fcm.RegistrationIntentService;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -27,6 +33,8 @@ import com.facebook.login.DefaultAudience;
 import com.facebook.login.LoginBehavior;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -44,17 +52,21 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity {
-
+    /**
+     * FCM관련 변수
+     **/
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    private static final String TAG = "LoginActivity";
     //커스텀 로그인을 위한 버튼 생성//
     ImageButton facebook_login_button; //로그인 버튼 커스텀//
-
     /**
      * Facebook 관련 변수
      **/
     LoginManager mLoginManager;
     NetworkManager networkManager;
     String access_token;
-    String fcm_toekn = "fcm_token";
+    String register_id;
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
     private CallbackManager callbackManager; //세션연결 콜백관리자.//
     private ProgressDialog pDialog;
     private Callback requestlogincallback = new Callback() {
@@ -123,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
                             PropertyManager.getInstance().set_user_id(loginRequest.getResult().getUser_id());
                             PropertyManager.getInstance().set_user_email(loginRequest.getResult().getUser_email());
                             PropertyManager.getInstance().set_user_facebookid(access_token);
-                            PropertyManager.getInstance().set_user_fcmtoken(fcm_toekn);
+                            PropertyManager.getInstance().set_user_fcmtoken(register_id);
                             PropertyManager.getInstance().set_user_gender(loginRequest.getResult().getUser_gender());
                             PropertyManager.getInstance().set_user_profileimageurl(loginRequest.getResult().getUser_profileimageurl());
                             PropertyManager.getInstance().set_user_name(loginRequest.getResult().getUser_name());
@@ -147,7 +159,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             //(이미 정보 존재 시 수정만 해준다.)공유저장소에 등록될 수정될 내용은 토큰값과 fcm값만 바꾸어 준다.//
                             PropertyManager.getInstance().set_user_facebookid(access_token);
-                            PropertyManager.getInstance().set_user_fcmtoken(fcm_toekn);
+                            PropertyManager.getInstance().set_user_fcmtoken(register_id);
 
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 
@@ -193,6 +205,8 @@ public class LoginActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
 
+        registBroadcastReceiver(); //FCM토큰값을 얻는다.//
+
         setContentView(R.layout.activity_login);
 
         facebook_login_button = (ImageButton) findViewById(R.id.facebook_login_button);
@@ -216,13 +230,90 @@ public class LoginActivity extends AppCompatActivity {
 
                     showpDialog();
 
-                    loginFacebook(); //FCM ID값 획득//
+                    getInstanceIdToken(); //FCM ID값 획득//
                 }
             }
         });
 
         //HashKey 출력//
         printKeyHash();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(QuickstartPreferences.REGISTRATION_READY));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(QuickstartPreferences.REGISTRATION_GENERATING));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(QuickstartPreferences.REGISTRATION_COMPLETE));
+    }
+
+    /**
+     * 앱이 화면에서 사라지면 등록된 LocalBoardcast를 모두 삭제한다.
+     */
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        super.onPause();
+    }
+
+    /**
+     * Instance ID를 이용하여 디바이스 토큰을 가져오는 RegistrationIntentService를 실행한다.
+     */
+    public void getInstanceIdToken() {
+        if (checkPlayServices()) {
+            // Start IntentService to register this application with GCM.
+            Intent intent = new Intent(this, RegistrationIntentService.class);
+            startService(intent);
+        }
+    }
+
+    public void registBroadcastReceiver() {
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+
+
+                if (action.equals(QuickstartPreferences.REGISTRATION_READY)) {
+                    // 액션이 READY일 경우
+
+                } else if (action.equals(QuickstartPreferences.REGISTRATION_GENERATING)) {
+                    // 액션이 GENERATING일 경우
+
+                } else if (action.equals(QuickstartPreferences.REGISTRATION_COMPLETE)) {
+                    // 액션이 COMPLETE일 경우
+                    String token = intent.getStringExtra("token");
+                    register_id = token;
+
+                    Log.d("json token fcm id : ", register_id);
+
+                    //토큰을 받은 이 후 로그인을 진행한다.//
+                    //토큰을 받지 못하면 로그인 과정을 진행하지 않는다.//
+                    loginFacebook();
+                }
+            }
+        };
+    }
+
+    /**
+     * Google Play Service를 사용할 수 있는 환경이지를 체크한다.
+     */
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                Log.i(TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
     }
 
     private void loginFacebook() {
@@ -291,7 +382,7 @@ public class LoginActivity extends AppCompatActivity {
         //Body설정//
         FormBody.Builder formBuilder = new FormBody.Builder()
                 .add("accessToken", access_token.toString())
-                .add("registrationToken", fcm_toekn.toString());
+                .add("registrationToken", register_id.toString());
 
         /** RequestBody 설정(파일 전송 시 Multipart로 설정) **/
         RequestBody body = formBuilder.build();

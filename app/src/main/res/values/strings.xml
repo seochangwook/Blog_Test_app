@@ -8,8 +8,12 @@
     <string name="load_more_normal_main">정보 더보기</string>
     <string name="load_more_loading_main">정보검색 중...</string>
 
-    <string name="server_domain">192.168.0.10</string>
+    <string name="server_domain">192.168.0.8</string>
     <string name="facebook_app_id">203997303364924</string> <!-- Facebook app id -->
+
+    <!-- GCM Server API Key / Sender ID -->
+    <string name="server_api_key">AIzaSyA-TPJ-6ueqhzcdFlCxz0A5SgBVKTuN1MI</string>
+    <string name="sender_id">247653564330</string>
 
     <string name="title_activity_main">Human Resource</string>
     <string name="title_activity_human_add">인사정보 등록</string>
